@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宇宙混戰狼人殺 V6</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+</head>
+<body>
+<header class="hero">
+  <div class="eyebrow">COSMIC WEREWOLF · V6</div>
+  <h1>🌌 宇宙混戰狼人殺 <span>V6</span></h1>
+  <p>六大陣營・全職業卡池・真人聯機・AI 混戰・進階測試</p>
+</header>
+
+<main>
+<section id="connection-area" class="card">
+  <h2>1. 遊戲模式與玩家設定</h2>
+  <label>你的遊戲暱稱</label>
+  <input id="my-player-name" value="玩家_1" maxlength="18">
+  <div class="mode-grid">
+    <button class="mode-card selected" data-mode="hybrid" type="button"><b>🤖 真人＋AI</b><small>房主可加入 AI 補足人數</small></button>
+    <button class="mode-card" data-mode="online" type="button"><b>🌐 真人聯機</b><small>所有玩家透過房間 ID 加入</small></button>
+    <button class="mode-card" data-mode="test" type="button"><b>🧪 進階測試</b><small>手動指定身分，密碼 676767</small></button>
+  </div>
+  <p>你的連線 ID：<strong id="my-peer-id">連線初始化中...</strong></p>
+  <div class="input-group"><input id="join-room-id" placeholder="輸入房間 ID"><button id="btn-join-room">加入房間</button></div>
+  <button id="btn-show-host-config" class="primary full">👑 建立新房間 / 設定遊戲</button>
+  <button id="btn-open-guide" class="secondary full">📖 全職業技能圖鑑</button>
+  <p class="muted">提示：PeerJS 公開訊號伺服器適合測試與小型遊戲。正式公開營運應改用自有訊號伺服器及可信任的後端權威驗證。</p>
+</section>
+
+<section id="host-config-area" class="card hidden">
+  <h2>2. 房主設定</h2>
+  <div class="config-row"><label>總玩家人數</label><input type="number" id="player-count" value="12" min="2" max="32"></div>
+  <div class="config-row"><label>AI 補位數量（混合模式）</label><input type="number" id="bot-count" value="5" min="0" max="31"></div>
+  <div class="config-row"><label>每日討論秒數</label><input type="number" id="discussion-seconds" value="45" min="10" max="300"></div>
+  <div class="config-row"><label>是否啟用遺言</label><input type="checkbox" id="enable-last-words" checked></div>
+  <h3>主職業卡池</h3><div id="main-role-pool" class="pool-grid"></div>
+  <h3>副職業卡池</h3><div id="sub-role-pool" class="pool-grid"></div>
+  <h3>附加職卡池</h3><div id="extra-role-pool" class="pool-grid"></div>
+  <div class="config-row"><label>附加戀人由主持人指定</label><select id="host-lovers"><option value="none">不指定</option><option value="random">隨機指定一組</option></select></div>
+  <button id="btn-create-room" class="primary full">建立大廳</button>
+  <button id="btn-back-setup" class="secondary full">返回</button>
+</section>
+
+<section id="test-mode-area" class="card hidden">
+  <h2>🧪 進階測試控制台</h2>
+  <p class="muted">測試模式可指定自己及 AI 的主職、副職、附加職。測試模式由本機主持人控制。</p>
+  <div class="config-row"><label>你的主職</label><select id="test-my-main"></select></div>
+  <div class="config-row"><label>你的副職</label><select id="test-my-sub"></select></div>
+  <div class="config-row"><label>你的附加職</label><select id="test-my-extra"></select></div>
+  <div id="test-bot-config-container"></div>
+  <div class="button-row"><button id="btn-add-test-bot">＋新增 AI</button><button id="btn-remove-test-bot" class="danger">－移除 AI</button></div>
+  <button id="btn-start-test" class="primary full">開始測試遊戲</button>
+</section>
+
+<section id="lobby-area" class="card hidden">
+  <h2>🏠 遊戲大廳</h2>
+  <p>房間 ID：<strong id="display-room-id" class="room-id">-</strong> <button id="btn-copy-share" class="secondary">複製邀請連結</button></p>
+  <p>玩家 <strong id="player-count-display">0</strong> 人</p>
+  <ul id="player-list"></ul>
+  <button id="btn-lobby-guide" class="secondary full">📚 查看遊戲規則與職業介紹</button>
+  <button id="btn-host-start" class="primary full">發牌並開始遊戲</button>
+</section>
+
+<section id="game-area" class="hidden">
+  <div class="game-top card">
+    <div><span class="muted">目前階段</span><h2 id="game-stage">等待開始</h2></div>
+    <div class="round-pill">第 <b id="round-number">1</b> 夜</div>
+  </div>
+  <div class="game-layout">
+    <div class="main-column">
+      <section class="card">
+        <h3>🎴 你的身分卡</h3>
+        <div id="my-card-details">身分尚未發放</div>
+      </section>
+      <section class="card">
+        <h3>⚔️ 行動面板</h3>
+        <div id="action-panel"><p class="muted">等待主持人開始遊戲。</p></div>
+      </section>
+      <section class="card">
+        <h3>🗳️ 投票與討論</h3>
+        <div id="vote-panel"></div>
+      </section>
+      <section class="card">
+        <h3>📜 遊戲日誌</h3>
+        <div id="log-content" aria-live="polite"></div>
+      </section>
+    </div>
+    <aside class="card">
+      <h3>👥 玩家狀態</h3>
+      <div id="player-status"></div>
+      <section class="host-console">
+        <h3>🎙️ AI 自動主持</h3>
+        <label class="toggle-row"><input type="checkbox" id="auto-host-toggle"> 自動流程（自動夜晚結算、討論倒數、投票）</label>
+        <label class="toggle-row"><input type="checkbox" id="ai-voice-toggle" checked> AI 主持人語音播報</label>
+        <label class="config-row">討論時間（秒） <input type="number" id="auto-discussion-seconds" min="10" max="300" value="60"></label>
+        <button id="btn-next-phase" class="primary full host-only">主持人：進入下一階段</button>
+        <button id="btn-stop-auto" class="secondary full host-only">暫停自動主持</button>
+      </section>
+      <button id="btn-restart" class="secondary full host-only">重新開始</button>
+    </aside>
+  </div>
+</section>
+</main>
+
+<div id="guide-modal" class="modal hidden">
+ <div class="modal-content card">
+  <button id="btn-close-guide" class="close-btn">×</button>
+  <h2>📖 V6 全職業技能圖鑑</h2>
+  <div id="guide-body"></div>
+ </div>
+</div>
+<div id="toast" role="status"></div>
+<script src="script.js"></script>
+</body>
+</html>

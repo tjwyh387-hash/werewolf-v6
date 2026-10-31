@@ -1,0 +1,51 @@
+*{box-sizing:border-box}
+:root{color-scheme:dark;--bg:#101219;--panel:#1b1f29;--panel2:#151923;--line:#343b4a;--gold:#f0b54a;--muted:#9ca6b7;--green:#27ae60;--red:#e05252}
+body{font-family:"PingFang TC","Microsoft JhengHei",sans-serif;background:radial-gradient(ellipse at top,#20283a 0,#101219 55%);color:#e7eaf0;margin:0;padding:22px;max-width:1250px;margin-inline:auto}
+.hero{text-align:center;padding:28px 10px 22px}.hero h1{font-size:clamp(28px,5vw,44px);margin:7px 0;color:#fff}.hero h1 span{color:var(--gold)}.hero p{color:var(--muted);margin:0}.eyebrow{letter-spacing:4px;color:var(--gold);font-size:11px;font-weight:800}
+h2,h3,h4{margin-top:0;color:var(--gold)}h2{font-size:22px}h3{font-size:17px;margin:18px 0 12px}
+.card{background:linear-gradient(145deg,#202530,#191d26);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:17px;box-shadow:0 12px 30px #0003}
+label{display:block;color:#cbd3df;font-size:14px;margin:8px 0}
+input,select{background:#10141d;border:1px solid #3a4354;color:#f3f5f8;border-radius:7px;padding:10px;font:inherit;max-width:100%}
+input[type=checkbox]{accent-color:var(--gold);width:18px;height:18px;vertical-align:middle}
+button{border:0;border-radius:8px;padding:10px 14px;background:#34445c;color:white;font-weight:700;cursor:pointer;transition:.15s}
+button:hover{filter:brightness(1.15);transform:translateY(-1px)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.primary{background:#d97724}.secondary{background:#315d86}.danger{background:#a83d48}.full{width:100%;margin-top:10px}
+.hidden{display:none!important}.muted{color:var(--muted);font-size:13px}.input-group,.button-row{display:flex;gap:9px;margin:12px 0}.input-group input{flex:1;min-width:0}
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.mode-card{background:#171d29;border:1px solid var(--line);text-align:left;padding:15px}.mode-card b,.mode-card small{display:block}.mode-card small{font-weight:400;color:var(--muted);margin-top:6px}.mode-card.selected{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.config-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;padding:9px 0;border-bottom:1px solid #ffffff10}.config-row label{margin:0}.config-row input[type=number]{width:90px}
+.pool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:8px;margin:10px 0 18px}.pool-item{display:grid;grid-template-columns:20px 1fr 58px;align-items:center;gap:7px;background:#151a24;padding:8px;border:1px solid #303848;border-radius:8px;font-size:13px}.pool-item input[type=number]{width:58px;padding:6px}
+#player-list{padding-left:22px;line-height:1.9}.room-id{color:var(--gold);letter-spacing:1px}
+.game-top{display:flex;align-items:center;justify-content:space-between}.game-top h2{margin:4px 0 0}.round-pill{background:#32303a;padding:10px 14px;border-radius:30px;color:var(--gold)}
+.game-layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px}.main-column{min-width:0}
+.role-card{padding:15px;border-left:4px solid var(--gold);background:#141923;border-radius:8px;line-height:1.9}.role-main{font-size:19px;color:var(--gold);font-weight:800}.faction-tag{display:inline-block;padding:3px 8px;border-radius:20px;background:#34445c;font-size:12px;margin-left:6px}
+#player-status{display:grid;gap:7px}.player-row{display:flex;justify-content:space-between;gap:8px;padding:8px;background:#151a24;border-radius:7px;font-size:13px}.alive{color:#70d69b}.dead{color:#ed7777;text-decoration:line-through}
+.action-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:8px;margin-top:10px}.action-grid button{background:#34445c}.action-form{background:#151a24;border:1px solid var(--line);padding:12px;border-radius:9px;margin:9px 0}.action-form select{width:100%;margin:7px 0}.action-form button{width:100%;margin-top:6px}
+#log-content{height:260px;overflow:auto;background:#0c0f15;border:1px solid #2b3340;border-radius:8px;padding:12px;font:13px/1.7 ui-monospace,monospace} .log-line{border-bottom:1px solid #ffffff0b;padding:2px 0}
+.modal{position:fixed;inset:0;background:#000b;z-index:20;display:flex;align-items:center;justify-content:center;padding:15px}.modal-content{width:min(760px,100%);max-height:85vh;overflow:auto;position:relative}.close-btn{float:right;background:transparent;font-size:26px;padding:0 8px}.guide-entry{padding:10px;margin:7px 0;background:#141923;border-radius:7px;border-left:3px solid var(--gold)}.guide-entry b{color:var(--gold)}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#30394a;color:white;padding:10px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:.2s;z-index:50}#toast.show{opacity:1}
+.host-only{display:none}body.is-host .host-only{display:block}
+@media(max-width:760px){body{padding:12px}.game-layout{grid-template-columns:1fr}.mode-grid{grid-template-columns:1fr}.game-top{align-items:flex-start}.card{padding:15px}.pool-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){.pool-grid{grid-template-columns:1fr}.input-group{flex-direction:column}.config-row{align-items:flex-start}.config-row input,.config-row select{max-width:55%}}
+
+.host-console{margin:14px 0;padding:14px;border:1px solid var(--border,#394052);border-radius:12px;background:rgba(255,255,255,.035)}
+.host-console h3{margin-top:0}
+.toggle-row{display:flex;align-items:center;gap:9px;margin:10px 0;font-size:.92rem}
+.toggle-row input{width:auto}
+.host-console .config-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0}
+.host-console input[type=number]{max-width:90px}
+
+/* 六大陣營職業顏色 */
+.pool-role-name{display:inline-block;font-weight:800;padding:2px 5px;border-radius:5px}
+.faction-good{color:#48a8ff!important}
+.faction-wolf{color:#ff5252!important}
+.faction-neutral{color:#ffd84d!important}
+.faction-rebel{color:#ff963d!important}
+.faction-cult{color:#c58bff!important}
+.faction-mafia{color:#111!important;background:#e8e8e8!important;text-shadow:none!important}
+.faction-special{color:#b8c0cc!important}
+.faction-tag{display:inline-block;margin-left:5px;padding:2px 7px;border-radius:5px;font-size:.78rem;font-weight:800;background:rgba(255,255,255,.07)}
+.rules-overview{padding:12px 14px;margin-bottom:18px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(255,255,255,.035);line-height:1.7}
+.rules-overview h3{margin:14px 0 7px}
+.rules-overview ul,.rules-overview ol{padding-left:22px}
+.rules-overview li{margin:5px 0}
+.rules-note{padding:10px;border-left:3px solid #d7ad55;background:rgba(215,173,85,.08);border-radius:4px}
